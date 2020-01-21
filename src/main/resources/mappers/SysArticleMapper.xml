@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hctech2006.hcnet.mapper.SysArticleMapper">
+  <resultMap id="articleMap" type="cn.hctech2006.hcnet.bean.SysArticle">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="article_name" jdbcType="VARCHAR" property="articleName" />
+    <result column="article_img" jdbcType="VARCHAR" property="articleImg" />
+    <result column="article_author" jdbcType="VARCHAR" property="articleAuthor" />
+    <result column="article_award" jdbcType="VARCHAR" property="articleAward" />
+    <result column="article_readtime" jdbcType="INTEGER" property="articleReadtime" />
+    <result column="article_ct" jdbcType="DATE" property="articleCt" />
+    <result column="article_ut" jdbcType="DATE" property="articleUt" />
+    <result column="year" jdbcType="VARCHAR" property="year" />
+    <result column="article_content" jdbcType="LONGVARCHAR" property="articleContent" />
+    <result column="article_group" jdbcType="VARCHAR" property="articleGroup"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="last_update_by" jdbcType="VARCHAR" property="lastUpdateBy" />
+    <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+    <result column="del_flag" jdbcType="TINYINT" property="delFlag" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_article
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="cn.hctech2006.hcnet.bean.SysArticle">
+    insert into sys_article (article_name, article_img,
+      article_author, article_award, article_readtime, 
+      article_ct, article_ut, year, 
+      article_content,article_group, create_time,create_by ,last_update_time, last_update_by, del_flag)
+    values (#{articleName,jdbcType=VARCHAR}, #{articleImg,jdbcType=VARCHAR},
+      #{articleAuthor,jdbcType=VARCHAR}, #{articleAward,jdbcType=VARCHAR}, #{articleReadtime,jdbcType=INTEGER}, 
+      #{articleCt,jdbcType=DATE}, #{articleUt,jdbcType=DATE}, #{year,jdbcType=VARCHAR}, 
+      #{articleContent,jdbcType=LONGVARCHAR},#{articleGroup, jdbcType = VARCHAR},#{createTime,jdbcType=TIMESTAMP},
+            #{createBy,jdbcType=VARCHAR}, #{lastUpdateBy,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP},
+            #{delFlag,jdbcType=TINYINT})
+  </insert>
+  <update id="updateByPrimaryKey" useGeneratedKeys="true" keyProperty="id" parameterType="cn.hctech2006.hcnet.bean.SysArticle">
+    update sys_article
+    set article_name = #{articleName,jdbcType=VARCHAR},
+      article_img = #{articleImg,jdbcType=VARCHAR},
+      article_author = #{articleAuthor,jdbcType=VARCHAR},
+      article_award = #{articleAward,jdbcType=VARCHAR},
+      article_readtime = #{articleReadtime,jdbcType=INTEGER},
+      article_ct = #{articleCt,jdbcType=DATE},
+      article_ut = #{articleUt,jdbcType=DATE},
+      year = #{year,jdbcType=VARCHAR},
+      article_content = #{articleContent,jdbcType=LONGVARCHAR},
+      article_group = #{articleGroup, jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        create_by = #{createBy,jdbcType=VARCHAR},
+        last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+        del_flag = #{delFlag,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="articleMap">
+    select id, article_name, article_img, article_author, article_award, article_readtime, 
+    article_ct, article_ut, year, article_content,article_group,create_by,create_time,last_update_by,last_update_time,del_flag
+    from sys_article
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="articleMap">
+    select id, article_name, article_img, article_author, article_award, article_readtime, 
+    article_ct, article_ut, year, article_content,article_group,create_by,create_time,last_update_by,last_update_time,del_flag
+    from sys_article
+  </select>
+
+  <select id="selectAllAges" resultType="String">
+    select
+    distinct
+    year
+    from sys_article
+    ORDER BY year DESC
+  </select>
+
+  <select id="findArticlesByAge" parameterType="cn.hctech2006.hcnet.bean.SysArticle" resultMap="articleMap">
+    select
+    id, article_name, article_content, article_img, article_author,
+           article_award, article_readtime, article_ct, article_ut, year,article_group,
+    create_by,create_time,last_update_by,last_update_time,del_flag
+    from sys_article
+    where year = #{year} and del_flag = #{delFlag}
+  </select>
+  <select id="findArticlesByGroup" parameterType="cn.hctech2006.hcnet.bean.SysArticle" resultMap="articleMap">
+    select
+    id, article_name, article_group, article_content, article_img, article_author,
+           article_award, article_readtime, article_ct, article_ut, year,
+    create_by,create_time,last_update_by,last_update_time,del_flag
+    from sys_article
+    where article_group = #{articleGroup} and del_flag = #{delFlag}
+  </select>
+  <update id="updateDelFlag" parameterType="cn.hctech2006.hcnet.bean.SysArticle">
+update sys_article
+set
+del_flag = #{delFlag}
+where id = #{id}
+  </update>
+</mapper>

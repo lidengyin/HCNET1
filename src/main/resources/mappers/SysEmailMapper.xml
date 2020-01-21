@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hctech2006.hcnet.mapper.SysEmailMapper">
+  <resultMap id="BaseResultMap" type="cn.hctech2006.hcnet.bean.SysEmail">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="email_name" jdbcType="VARCHAR" property="emailName" />
+    <result column="email_account" jdbcType="VARCHAR" property="emailAccount" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="ctreate_by" jdbcType="VARCHAR" property="ctreateBy" />
+    <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+    <result column="last_update_by" jdbcType="VARCHAR" property="lastUpdateBy" />
+    <result column="email_content" jdbcType="LONGVARCHAR" property="emailContent" />
+    <result column="del_flag" jdbcType="TINYINT" property="delFlag"/>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_email
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="cn.hctech2006.hcnet.bean.SysEmail">
+
+    insert into sys_email ( email_name, email_account,
+      create_time, ctreate_by, last_update_time, 
+      last_update_by, email_content,del_flag)
+    values (#{emailName,jdbcType=VARCHAR}, #{emailAccount,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP}, #{ctreateBy,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+      #{lastUpdateBy,jdbcType=VARCHAR}, #{emailContent,jdbcType=LONGVARCHAR},#{delFlag, jdbcType=TINYINT})
+  </insert>
+  <update id="updateByPrimaryKey" useGeneratedKeys="true" keyProperty="id" parameterType="cn.hctech2006.hcnet.bean.SysEmail">
+    update sys_email
+    set email_name = #{emailName,jdbcType=VARCHAR},
+      email_account = #{emailAccount,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      ctreate_by = #{ctreateBy,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+      email_content = #{emailContent,jdbcType=LONGVARCHAR},
+        del_flag = #{delFlag, jdbcType = TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, email_name, email_account, create_time, ctreate_by, last_update_time, 
+    last_update_by, email_content,del_flag
+    from sys_email
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select id, email_name, email_account, create_time, ctreate_by, last_update_time, 
+    last_update_by, email_content,del_flag
+    from sys_email
+where del_flag = 0
+order by create_time desc
+  </select>
+  <update id="updatedelFlag" parameterType="cn.hctech2006.hcnet.bean.SysEmail">
+    update sys_email
+set del_flag = #{delFlag}
+where id = #{id}
+  </update>
+  <select id="selectByStatus" parameterType="java.lang.Byte" resultMap="BaseResultMap">
+    select
+    id, email_name, email_account, email_content, create_time, ctreate_by, last_update_time, last_update_by, del_flag
+    from sys_email
+where del_flag = #{delFlag}
+  </select>
+</mapper>

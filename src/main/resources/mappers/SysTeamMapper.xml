@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hctech2006.hcnet.mapper.SysTeamMapper">
+  <resultMap id="teamMap" type="cn.hctech2006.hcnet.bean.SysTeam">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="team_name" jdbcType="VARCHAR" property="teamName" />
+    <result column="team_detail" jdbcType="VARCHAR" property="teamDetail" />
+    <result column="team_wechat_name" jdbcType="VARCHAR" property="teamWechatName" />
+    <result column="team_wechat" jdbcType="VARCHAR" property="teamWechat" />
+    <result column="team_qq_name" jdbcType="VARCHAR" property="teamQqName" />
+    <result column="team_qq" jdbcType="VARCHAR" property="teamQq" />
+    <result column="team_upload_time" jdbcType="TIMESTAMP" property="teamUploadTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="last_update_by" jdbcType="VARCHAR" property="lastUpdateBy" />
+    <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+    <result column="del_flag" jdbcType="TINYINT" property="delFlag" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_team
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="cn.hctech2006.hcnet.bean.SysTeam">
+    insert into sys_team (id, team_name, team_detail, 
+      team_wechat_name, team_wechat, team_qq_name, 
+      team_qq, team_upload_time,create_time,
+    create_by, last_update_by, last_update_time,
+    del_flag)
+    values (#{id,jdbcType=BIGINT}, #{teamName,jdbcType=VARCHAR}, #{teamDetail,jdbcType=VARCHAR}, 
+      #{teamWechatName,jdbcType=VARCHAR}, #{teamWechat,jdbcType=VARCHAR}, #{teamQqName,jdbcType=VARCHAR}, 
+      #{teamQq,jdbcType=VARCHAR}, #{teamUploadTime,jdbcType=TIMESTAMP}, #{createTime,jdbcType=TIMESTAMP},
+    #{createBy,jdbcType=VARCHAR}, #{lastUpdateBy,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP},
+    #{delFlag,jdbcType=TINYINT})
+  </insert>
+  <update id="updateByPrimaryKey" useGeneratedKeys="true" keyProperty="id" parameterType="cn.hctech2006.hcnet.bean.SysTeam">
+    update sys_team
+    set team_name = #{teamName,jdbcType=VARCHAR},
+      team_detail = #{teamDetail,jdbcType=VARCHAR},
+      team_wechat_name = #{teamWechatName,jdbcType=VARCHAR},
+      team_wechat = #{teamWechat,jdbcType=VARCHAR},
+      team_qq_name = #{teamQqName,jdbcType=VARCHAR},
+      team_qq = #{teamQq,jdbcType=VARCHAR},
+      team_upload_time = #{teamUploadTime,jdbcType=TIMESTAMP},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        create_by = #{createBy,jdbcType=VARCHAR},
+        last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+        del_flag = #{delFlag,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="teamMap">
+    select id, team_name, team_detail, team_wechat_name, team_wechat, team_qq_name, team_qq, 
+    team_upload_time,create_time,
+           create_by, last_update_by, last_update_time,
+           del_flag
+    from sys_team
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" parameterType="java.lang.Byte" resultMap="teamMap">
+    select id, team_name, team_detail, team_wechat_name, team_wechat, team_qq_name, team_qq, 
+    team_upload_time,create_time,
+           create_by, last_update_by, last_update_time,
+           del_flag
+    from sys_team where del_flag = #{delFlag}
+  </select>
+  <update id="updateDelFlag" parameterType="cn.hctech2006.hcnet.bean.SysTeam">
+    update sys_team
+    set
+      del_flag = #{delFlag}
+    where id = #{id}
+  </update>
+</mapper>

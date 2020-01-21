@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hctech2006.hcnet.mapper.SysDirectMapper">
+
+  <resultMap id="directMap" type="cn.hctech2006.hcnet.bean.SysDirect">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="direct_name" jdbcType="VARCHAR" property="directName" />
+    <result column="direct_group" jdbcType="VARCHAR" property="directGroup" />
+    <result column="direct_enable" jdbcType="CHAR" property="directEnable" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="last_update_by" jdbcType="VARCHAR" property="lastUpdateBy" />
+    <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+    <result column="del_flag" jdbcType="TINYINT" property="delFlag" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_direct
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="cn.hctech2006.hcnet.bean.SysDirect">
+    insert into sys_direct (direct_name, direct_group,
+      direct_enable,del_flag)
+    values (#{directName,jdbcType=VARCHAR}, #{directGroup,jdbcType=VARCHAR},
+      #{directEnable,jdbcType=CHAR},#{delFlag,jdbcType = TINYINT})
+  </insert>
+  <update id="updateByPrimaryKey" useGeneratedKeys="true" keyProperty="id" parameterType="cn.hctech2006.hcnet.bean.SysDirect">
+    update sys_direct
+    set direct_name = #{directName,jdbcType=VARCHAR},
+      direct_group = #{directGroup,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+        create_by = #{createBy,jdbcType=VARCHAR},
+        last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+        last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+        del_flag = #{delFlag,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="directMap">
+    select id, direct_name, direct_group, del_flag,create_time,create_by,last_update_time,last_update_by
+    from sys_direct
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" parameterType="java.lang.Byte"  resultMap="directMap">
+    select
+    id, direct_name, direct_group, create_by, last_update_time, last_update_by, del_flag, create_time
+
+    from sys_direct
+    where del_flag = #{delFlag}
+  </select>
+  <select id="selectAllByGroup" parameterType="cn.hctech2006.hcnet.bean.SysDirect" resultMap="directMap">
+    select
+    id, direct_name, direct_group, direct_enable, create_by, last_update_time, last_update_by, del_flag, create_time
+    from sys_direct
+    where  1 =1
+    <if test="directGroup != null">
+      and direct_group = #{directGroup}
+    </if>
+      <if test="delFlag">
+        and del_flag = #{delFlag}
+      </if>
+  </select>
+  <update id="updateEnabled" useGeneratedKeys="true" keyProperty="id" parameterType="cn.hctech2006.hcnet.bean.SysDirect">
+    update sys_direct
+    set
+        del_flag = #{delFlag}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateGroup" useGeneratedKeys="true" keyProperty="id" parameterType="cn.hctech2006.hcnet.bean.SysDirect">
+    update sys_direct
+    set
+        direct_group = #{directGroup,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hctech2006.hcnet.mapper.SysResMapper">
+  <resultMap id="resMap" type="cn.hctech2006.hcnet.bean.SysRes">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="res_name" jdbcType="VARCHAR" property="resName" />
+    <result column="res_img" jdbcType="VARCHAR" property="resImg" />
+    <result column="res_detail" jdbcType="VARCHAR" property="resDetail" />
+    <result column="res_ct" jdbcType="DATE" property="resCt" />
+    <result column="del_flag" jdbcType="TINYINT" property="delFlag"/>
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_res
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="cn.hctech2006.hcnet.bean.SysRes">
+
+    insert into sys_res (res_name, res_img,
+      res_detail,res_ct,del_flag)
+    values (#{resName,jdbcType=VARCHAR}, #{resImg,jdbcType=VARCHAR},
+      #{resDetail,jdbcType=VARCHAR},#{resCt,jdbcType=DATE}, #{delFlag, jdbcType=TINYINT})
+  </insert>
+  <update id="updateByPrimaryKey" useGeneratedKeys="true" keyProperty="id" parameterType="cn.hctech2006.hcnet.bean.SysRes">
+    update sys_res
+    set res_name = #{resName,jdbcType=VARCHAR},
+      res_img = #{resImg,jdbcType=VARCHAR},
+      res_detail = #{resDetail,jdbcType=VARCHAR},
+        res_ct = #{resCt,jdbcType=DATE},
+        del_flag = #{delFlag, jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="resMap">
+    select id, res_name, res_img, res_detail,res_ct,del_flag
+    from sys_res
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" parameterType="java.lang.Byte"  resultMap="resMap">
+    select id, res_name, res_img, res_detail,res_ct,del_flag
+    from sys_res
+where del_flag = #{delFlag}
+  </select>
+  <update id="updateDelFlag" parameterType="cn.hctech2006.hcnet.bean.SysRes">
+    update sys_res
+set del_flag = #{delFlag}
+where id = #{id}
+  </update>
+</mapper>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hctech2006.hcnet.mapper.SysProMapper">
+
+  <resultMap id="proMap" type="cn.hctech2006.hcnet.bean.SysPro">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="pro_name" jdbcType="VARCHAR" property="proName" />
+    <result column="pro_img" jdbcType="VARCHAR" property="proImg" />
+    <result column="pro_date" jdbcType="DATE" property="proDate" />
+    <result column="pro_group" jdbcType="CHAR" property="proGroup" />
+    <result column="pro_detail" jdbcType="LONGVARCHAR" property="proDetail" />
+    <result column="pro_ct" jdbcType="DATE" property="proCt" />
+    <result column="pro_intro" jdbcType="VARCHAR" property="proIntro"/>
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="last_update_by" jdbcType="VARCHAR" property="lastUpdateBy" />
+    <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+    <result column="del_flag" jdbcType="TINYINT" property="delFlag" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from sys_pro
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="cn.hctech2006.hcnet.bean.SysPro">
+
+    insert into sys_pro (pro_name, pro_img,
+      pro_date, pro_group, pro_detail,pro_ct,pro_intro,create_time,create_by,last_update_by,last_update_time,del_flag
+      )
+    values ( #{proName,jdbcType=VARCHAR}, #{proImg,jdbcType=VARCHAR},
+      #{proDate,jdbcType=DATE}, #{proGroup,jdbcType=CHAR}, #{proDetail,jdbcType=LONGVARCHAR},
+            #{proCt,jdbcType=DATE},#{proIntro, jdbcType=VARCHAR} , #{createTime,jdbcType=TIMESTAMP},
+            #{createBy,jdbcType=VARCHAR}, #{lastUpdateBy,jdbcType=VARCHAR},
+            #{lastUpdateTime,jdbcType=TIMESTAMP}, #{delFlag,jdbcType=TINYINT})
+  </insert>
+  <update id="updateByPrimaryKey" useGeneratedKeys="true" keyProperty="id" parameterType="cn.hctech2006.hcnet.bean.SysPro">
+    update sys_pro
+    set pro_name = #{proName,jdbcType=VARCHAR},
+      pro_img = #{proImg,jdbcType=VARCHAR},
+      pro_date = #{proDate,jdbcType=DATE},
+      pro_group = #{proGroup,jdbcType=CHAR},
+      pro_detail = #{proDetail,jdbcType=LONGVARCHAR},
+        pro_ct = #{proCt,jdbcType=DATE},
+        pro_intro = #{proIntro, jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      del_flag = #{delFlag,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="proMap">
+    select id, pro_name, pro_img, pro_date, pro_group, pro_detail,pro_ct,pro_intro,
+           create_time,create_by,last_update_by,last_update_time,del_flag
+    from sys_pro
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" resultMap="proMap">
+    select id, pro_name, pro_img, pro_date, pro_group, pro_detail,pro_ct,pro_intro,
+           create_time,create_by,last_update_by,last_update_time,del_flag
+    from sys_pro
+  </select>
+  <select id="findProByGroup" parameterType="String" resultMap="proMap">
+    select
+    id, pro_name, pro_detail, pro_img, pro_date, pro_group,pro_ct,pro_intro,
+    create_time,create_by,last_update_by,last_update_time,del_flag
+    from sys_pro
+    where pro_group = #{group}
+  </select>
+  <update id="updateDelFlag" useGeneratedKeys="true" keyProperty="id" parameterType="java.lang.Byte">
+    update sys_pro
+set del_flag = #{delFlag}
+where id = #{id}
+  </update>
+  <select id="selectByStatus" parameterType="java.lang.Byte" resultMap="proMap">
+    select
+    id, pro_name, pro_intro, pro_detail, pro_img, pro_date, pro_group, pro_enddate, pro_ct, create_time, create_by, last_update_time, last_update_by, del_flag
+    from sys_pro
+where del_flag = #{del_flag}
+  </select>
+</mapper>

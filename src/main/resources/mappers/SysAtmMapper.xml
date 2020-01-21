@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.hctech2006.hcnet.mapper.SysAtmMapper">
+
+  <resultMap id="BaseResultMap" type="cn.hctech2006.hcnet.bean.SysAtm">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="atm_name" jdbcType="VARCHAR" property="atmName" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="last_update_by" jdbcType="VARCHAR" property="lastUpdateBy" />
+    <result column="last_update_time" jdbcType="TIMESTAMP" property="lastUpdateTime" />
+    <result column="del_flag" jdbcType="TINYINT" property="delFlag" />
+    <result column="atm_detail" jdbcType="LONGVARCHAR" property="atmDetail" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_atm
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" useGeneratedKeys="true" keyProperty="id" parameterType="cn.hctech2006.hcnet.bean.SysAtm">
+    insert into sys_atm ( atm_name, create_time,
+      create_by, last_update_by, last_update_time, 
+      del_flag, atm_detail)
+    values (#{atmName,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+      #{createBy,jdbcType=VARCHAR}, #{lastUpdateBy,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=TIMESTAMP}, 
+      #{delFlag,jdbcType=TINYINT}, #{atmDetail,jdbcType=LONGVARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" useGeneratedKeys="true" keyProperty="id" parameterType="cn.hctech2006.hcnet.bean.SysAtm">
+    update sys_atm
+    set atm_name = #{atmName,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      create_by = #{createBy,jdbcType=VARCHAR},
+      last_update_by = #{lastUpdateBy,jdbcType=VARCHAR},
+      last_update_time = #{lastUpdateTime,jdbcType=TIMESTAMP},
+      del_flag = #{delFlag,jdbcType=TINYINT},
+      atm_detail = #{atmDetail,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select id, atm_name, create_time, create_by, last_update_by, last_update_time, del_flag, 
+    atm_detail
+    from sys_atm
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectAll" parameterType="java.lang.Byte"   resultMap="BaseResultMap">
+    select id, atm_name, create_time, create_by, last_update_by, last_update_time, del_flag, 
+    atm_detail
+    from sys_atm where del_flag = #{delFlag}
+order by create_time desc
+  </select>
+  <update id="updateDelFlag" parameterType="cn.hctech2006.hcnet.bean.SysAtm">
+    update sys_atm
+set
+del_flag = #{delFlag}
+where id = #{id}
+  </update>
+</mapper>
